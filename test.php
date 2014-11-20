@@ -1,32 +1,26 @@
 <?php
 
-require_once 'GoogleShopping.php';
+define('INSIDE', 1);
+define('DEBUG', 1);
 
-$ean = '8806085553941';
+require 'GoogleShopping.php';
 
-$crawler = new GoogleShopping;
-$prices = $crawler->getPrices($ean);
+try{
 
-echo "<PRE>", json_encode($prices, JSON_PRETTY_PRINT), "</PRE>";
+    $ean = '8806085553941';
+    $crawler = new GoogleShopping;
+    $prices = $crawler->getPrices($ean);
+    echo "<PRE>", json_encode($prices/*, JSON_PRETTY_PRINT*/), "</PRE>";
 
-/*
-    [
-        {
-            "seller": "PDAshop.nl",
-            "price": 179
-        },
-        {
-            "seller": "Belsimpel.nl",
-            "price": 158
-        },
-        {
-            "seller": "bol.com",
-            "price": 189
-        },
-        {
-            "seller": "4Launch",
-            "price": 159.95
-        },
-        ...
-    ]
-*/
+    
+}catch (Exception $e){  
+    
+    outputError($e->getMessage());   
+    
+}
+
+
+function outputError(Exception $e){
+    if(DEBUG) echo $e->getMessage ();
+    else error_log ($e->getMessage ());
+}
